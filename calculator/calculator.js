@@ -33,7 +33,7 @@ function setupIntialValues() {
 // Get the current values from the UI
 // Update the monthly payment
 function update() {
-  calculateMonthlyPayment(getCurrentUIValues());
+  calculateMonthlyPayments(getCurrentUIValues());
   updateMonthly();
 }
 
@@ -41,15 +41,18 @@ function zeroDecimal (num) {
   let decimal = num.split(".");
   if (decimal[1].length === 1){
     decimal[1] = decimal[1] + "0";
+    return decimal[0]+ "." + decimal[1];
     }
-  return decimal[0]+ "." + decimal[1];
+  else 
+  return num;
+  
 }
 
 
 // Given an object of values (a value has amount, years and rate ),
 // calculate the monthly payment.  The output should be a string
 // that always has 2 decimal places.
-function calculateMonthlyPayment(values) {
+function calculateMonthlyPayments(values) {
     let i = (values.rate/100) / 12;
     let dividend =  (values.amount * i);
     let n = values.years * 12;
@@ -57,6 +60,7 @@ function calculateMonthlyPayment(values) {
     let monthlyPayments = Math.round((dividend/divisor)*100) / 100;
     monthlyPayments = monthlyPayments.toString();
     monthlyPayments = zeroDecimal(monthlyPayments);
+    console.log("monthlyPayments : "+ monthlyPayments);
     return monthlyPayments;
 }
 
@@ -64,6 +68,6 @@ function calculateMonthlyPayment(values) {
 // update the UI to show the value.
 function updateMonthly() {
   const  monthlyInput = document.getElementById("monthly-payment");
-  monthlyInput.innerText = "$" + calculateMonthlyPayment(getCurrentUIValues());
+  monthlyInput.innerText = "$" + calculateMonthlyPayments(getCurrentUIValues());
 }
 
